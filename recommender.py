@@ -7,9 +7,8 @@ from sklearn.neighbors import NearestNeighbors
 def load_data():
     movies = pd.read_csv("./data/movies.csv")
     tags = pd.read_csv("./data/tags.csv")
-    ratings = pd.read_csv("./data/ratings.csv")
 
-    return movies, tags, ratings
+    return movies, tags
 
 
 def preprocess_data(movies, tags):
@@ -93,18 +92,10 @@ def build_model(X_tfidf):
     return model
 
 
-def add_ratings(movies_model, ratings):
-    # Build ratings summary
-    ratings_summary = (
-        ratings.groupby("movieId")
-        .agg(mean_rating=("rating", "mean"), rating_count=("rating", "count"))
-        .reset_index()
-    )
+def add_ratings(movies_model, ratings_summary):
 
-    # Merge into movies
     movies_model = movies_model.merge(ratings_summary, on="movieId", how="left")
 
-    # Fill missing values
     movies_model["mean_rating"] = movies_model["mean_rating"].fillna(0)
     movies_model["rating_count"] = movies_model["rating_count"].fillna(0)
 
@@ -183,11 +174,12 @@ def recommend_movies(
 
 def main():
 
-    movies, tags, ratings = load_data()
+    movies, tags = load_data()
     movies_model = preprocess_data(movies, tags)
+    ratings_summary = pd.read_csv("./precompute/ratings_summary.csv")
     X_tfidf, tfidf = build_features(movies_model)
     nn_model = build_model(X_tfidf)
-    movies_model = add_ratings(movies_model, ratings)
+    movies_model = add_ratings(movies_model, ratings_summary)
 
     while True:
         movie_name = input("Enter a movie name: ").strip()
