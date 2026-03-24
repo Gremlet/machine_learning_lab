@@ -170,12 +170,18 @@ def recommend_movies(
         by=["weighted_score", "distance"], ascending=[False, True]
     )
 
+    if recommendations.empty:
+        return (
+            f"No suitable recommendations found for '{title}'. "
+            f"Try lowering min_ratings or using a different title."
+        )
+
     return recommendations[
         ["title", "genres", "mean_rating", "rating_count", "weighted_score", "distance"]
     ].head(n)
 
 
-def main(movie_name):
+def main():
 
     movies, tags, ratings = load_data()
     movies_model = preprocess_data(movies, tags)
@@ -183,22 +189,27 @@ def main(movie_name):
     nn_model = build_model(X_tfidf)
     movies_model = add_ratings(movies_model, ratings)
 
-    results = recommend_movies(movie_name, movies_model, X_tfidf, nn_model)
+    while True:
+        movie_name = input("Enter a movie name: ").strip()
 
-    if isinstance(results, str):
-        print(results)
+        results = recommend_movies(movie_name, movies_model, X_tfidf, nn_model)
 
-    elif "mean_rating" not in results.columns:
-        print(
-            "\nMultiple matches found. Please search again using one of these exact titles:\n"
-        )
-        print(results.to_string(index=False))
+        if isinstance(results, str):
+            print(results)
+            print("\nTry again.\n")
 
-    else:
-        print("\nRecommended movies:\n")
-        print(results.to_string(index=False))
+        elif "mean_rating" not in results.columns:
+            print(
+                "\nMultiple matches found. Please search again using one of these exact titles:\n"
+            )
+            print(results.to_string(index=False))
+            print("\nTry again.\n")
+
+        else:
+            print("\nRecommended movies:\n")
+            print(results.to_string(index=False))
+            break
 
 
 if __name__ == "__main__":
-    movie_name = input("Enter a movie name\n")
-    main(movie_name)
+    main()
