@@ -32,14 +32,14 @@ def recommend_movies(
 
     query = title.lower().strip()
 
-    # 1. Exact full title match
+    # Exact full title match
     matches = movies_df[movies_df["title"].str.lower() == query]
 
-    # 2. Exact cleaned title match
+    # Exact cleaned title match
     if matches.empty:
         matches = movies_df[movies_df["title_clean"] == query]
 
-    # 3. Partial cleaned title match
+    # Partial cleaned title match
     if matches.empty:
         matches = movies_df[movies_df["title_clean"].str.contains(query, na=False)]
 
@@ -65,7 +65,7 @@ def recommend_movies(
 
     recommendations["distance"] = rec_distances
 
-    # Remove truly useless recommendations
+    # Remove truly useless recommendations with neither genres nor tags
     recommendations = recommendations[
         ~(
             (recommendations["genres"] == "(no genres listed)")
