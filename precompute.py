@@ -13,6 +13,7 @@ ARTIFACTS_DIR = Path("./artifacts")
 MOVIES_PATH = DATA_DIR / "movies.csv"
 TAGS_PATH = DATA_DIR / "tags.csv"
 RATINGS_PATH = DATA_DIR / "ratings.csv"
+LINKS_PATH = DATA_DIR / "links.csv"
 
 MOVIES_MODEL_PATH = ARTIFACTS_DIR / "movies_model.csv"
 RATINGS_SUMMARY_PATH = ARTIFACTS_DIR / "ratings_summary.csv"
@@ -26,8 +27,9 @@ def load_data():
     movies = pd.read_csv(MOVIES_PATH)
     tags = pd.read_csv(TAGS_PATH)
     ratings = pd.read_csv(RATINGS_PATH, usecols=["movieId", "rating"])
+    links = pd.read_csv(LINKS_PATH)
 
-    return movies, tags, ratings
+    return movies, tags, ratings, links
 
 
 def preprocess_data(movies, tags):
@@ -125,12 +127,15 @@ def build_ratings_summary(ratings):
     return ratings_summary
 
 
-def add_ratings(movies_model, ratings_summary):
+def add_ratings(movies_model, ratings_summary, links):
 
     movies_model = movies_model.merge(ratings_summary, on="movieId", how="left")
 
     movies_model["mean_rating"] = movies_model["mean_rating"].fillna(0)
     movies_model["rating_count"] = movies_model["rating_count"].fillna(0)
+    movies_model = movies_model.merge(
+        links[["movieId", "imdbId"]], on="movieId", how="left"
+    )
 
     return movies_model
 
@@ -163,7 +168,7 @@ def save_artifacts(
 def precompute_all():
     """Run full preprocessing pipeline and save reusable artifacts."""
     print("Loading raw data...")
-    movies, tags, ratings = load_data()
+    movies, tags, ratings, links = load_data()
 
     print("Preprocessing movies and tags...")
     movies_model = preprocess_data(movies, tags)
@@ -182,7 +187,7 @@ def precompute_all():
     print(f"ratings_summary shape: {ratings_summary.shape}")
 
     print("Merging ratings into movies...")
-    movies_model_ready = add_ratings(movies_model, ratings_summary)
+    movies_model_ready = add_ratings(movies_model, ratings_summary, links)
     print(f"movies_model_ready shape: {movies_model_ready.shape}")
 
     print("Saving artifacts...")

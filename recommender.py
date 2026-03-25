@@ -60,7 +60,15 @@ def recommend_movies(
     rec_distances = distances.flatten()[1:]
 
     recommendations = movies_df.iloc[rec_indices][
-        ["title", "genres", "tag", "content_word_count", "mean_rating", "rating_count"]
+        [
+            "title",
+            "genres",
+            "tag",
+            "content_word_count",
+            "mean_rating",
+            "rating_count",
+            "imdbId",
+        ]
     ].copy()
 
     recommendations["distance"] = rec_distances
@@ -92,7 +100,15 @@ def recommend_movies(
         )
 
     return recommendations[
-        ["title", "genres", "mean_rating", "rating_count", "weighted_score", "distance"]
+        [
+            "title",
+            "genres",
+            "mean_rating",
+            "rating_count",
+            "weighted_score",
+            "distance",
+            "imdbId",
+        ]
     ].head(n)
 
 
