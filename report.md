@@ -75,7 +75,7 @@ Next, several filtering steps were applied to remove low-quality or uninformativ
 
 Finally, the remaining candidates were ranked using a weighted scoring function that combines average rating and rating count:
 
-$\text{weighted score} = \text{mean rating} \cdot \log(1 + \text{rating count})$
+$$\text{weighted score} = \text{mean rating} \cdot \log(1 + \text{rating count})$$
 
 ```python
 recommendations["weighted_score"] = recommendations["mean_rating"] * np.log1p(recommendations["rating_count"])
