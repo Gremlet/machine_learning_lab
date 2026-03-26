@@ -54,7 +54,7 @@ def create_movie_card(row):
                         },
                     ),
                     html.P(
-                        f"Genres: {row['genres']}",
+                        f"Genres: {row['genres']}".replace("|", ", "),
                         style={
                             "marginBottom": "15px",
                             "lineHeight": "1.4",
