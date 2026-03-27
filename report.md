@@ -63,7 +63,7 @@ def build_model(X_tfidf):
     return model
 ```
 
-## Recommendation Refinement and Ranking
+## Recommendation refinement and ranking
 
 While the TF-IDF-based similarity model produced more context-aware recommendations than the genre-only baseline, the initial results still revealed some practical limitations. In particular, returning the nearest neighbours directly often led to recommendations that were either too obscure, lacked sufficient metadata, or were not consistently aligned with user expectations.
 
