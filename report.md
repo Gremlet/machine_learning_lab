@@ -28,7 +28,7 @@ However, the approach also had clear limitations. Genre information alone is rel
 
 ## Improved model: TF-IDF with genres and tags
 
-To improve the quality of recommendations, the model was extended to incorporate both genres and user-generated tags. While genres provide structured, predefined categories, they are relatively coarse and do not capture finer details such as tone, themes, or narrative elements. In contrast, tags offer more expressive and descriptive information, capturing how users perceive and describe movies.
+To improve the quality of recommendations, the model was extended to incorporate both genres and user-generated tags. Tags offer more expressive and descriptive information, capturing how users perceive and describe movies.
 
 Genres and tags were combined into a single textual representation for each movie. To ensure that genre information remained a strong signal alongside the more variable tag data, genres were converted into text and deliberately repeated. This weighting strategy helped preserve the importance of structured genre information while still benefiting from the richer, more nuanced descriptions provided by tags.
 
