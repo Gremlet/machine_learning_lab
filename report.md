@@ -85,7 +85,7 @@ This approach balances quality and confidence. Movies with high average ratings 
 
 The final recommendations were then selected by sorting candidates primarily by weighted score and secondarily by similarity distance. This ensures that the results remain relevant to the input movie while also favouring higher-quality and more reliable recommendations.
 
-While this ranking strategy improves overall recommendation quality, it introduces a known limitation; a tendency toward popularity bias. Widely rated and well-known films (e.g., Forrest Gump or One Flew Over the Cuckoo’s Nest) are more likely to be recommended, even when less popular movies may be more closely aligned in terms of content. This highlights a trade-off between recommendation reliability and diversity.
+While this ranking strategy improves overall recommendation quality, it introduces a known limitation; a tendency toward popularity bias. Widely rated and highly rated films (e.g., Forrest Gump or One Flew Over the Cuckoo’s Nest) are more likely to be recommended, even when less popular movies may be more closely aligned in terms of content. This highlights a trade-off between recommendation reliability and diversity.
 
 ## Performance optimisation
 
