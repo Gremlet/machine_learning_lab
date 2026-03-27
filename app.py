@@ -225,7 +225,7 @@ def search_movie(n_clicks, movie_name, rec_number):
                         for _, row in results.iterrows()
                     ],
                     placeholder="Choose the movie you meant",
-                    style={"width": "500px", "margin": "0 auto"},
+                    style={"maxWidth": "500px", "margin": "0 auto"},
                 ),
             ]
         )
